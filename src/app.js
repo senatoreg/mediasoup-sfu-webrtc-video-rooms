@@ -1,5 +1,6 @@
 const express = require('express')
 
+const cors = require('cors')
 const app = express()
 const https = require('httpolyglot')
 const fs = require('fs')
@@ -9,15 +10,20 @@ const path = require('path')
 const Room = require('./Room')
 const Peer = require('./Peer')
 
+const corsParams = { credentials: true, origin: true }
+app.use(cors(corsParams))
+
 const options = {
   key: fs.readFileSync(path.join(__dirname, config.sslKey), 'utf-8'),
   cert: fs.readFileSync(path.join(__dirname, config.sslCrt), 'utf-8')
 }
 
 const httpsServer = https.createServer(options, app)
-const io = require('socket.io')(httpsServer)
+const io = require('socket.io')(httpsServer, { cors: corsParams })
 
-app.use(express.static(path.join(__dirname, '..', 'public')))
+if (process.env.WEB_UI !== undefined) {
+  app.use(express.static(path.join(__dirname, '..', 'public')))
+}
 
 httpsServer.listen(config.listenPort, () => {
   console.log('Listening on https://' + config.listenIp + ':' + config.listenPort)

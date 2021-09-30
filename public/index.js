@@ -26,7 +26,7 @@ function joinRoom(name, room_id) {
   } else {
     initEnumerateDevices()
 
-    rc = new RoomClient(localMedia, remoteVideos, remoteAudios, window.mediasoupClient, socket, room_id, name, roomOpen)
+    rc = new RoomClient(localMedia, remoteVideos, remoteAudios, MediasoupClient, socket, room_id, name, roomOpen)
 
     addListeners()
   }
