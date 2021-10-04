@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediasoup-sfu-webrtc-deployment
+  labels:
+    app: mediasoup-sfu-webrtc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediasoup-sfu-webrtc
+  template:
+    metadata:
+      labels:
+        app: mediasoup-sfu-webrtc
+    spec:
+      containers:
+      - name: mediasoup-sfu-webrtc
+        image: docker.io/senatoreg/mediasoup-sfu-webrtc:latest
+        ports:
+        - containerPort: 3016
+        livenessProbe:
+          httpGet:
+            path: /socket.io/?EIO=4&transport=polling
+            port: 3016
+          initialDelaySeconds: 3
+          periodSeconds: 3
