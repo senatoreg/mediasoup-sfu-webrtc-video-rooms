@@ -21,7 +21,7 @@ spec:
         - containerPort: 3016
         livenessProbe:
           httpGet:
-            path: /socket.io/?EIO=4&transport=polling
+            path: /mediasoup/socket.io/?EIO=4&transport=polling
             port: 3016
           initialDelaySeconds: 3
           periodSeconds: 3

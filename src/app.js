@@ -19,10 +19,11 @@ const options = {
 }
 
 const httpsServer = https.createServer(options, app)
-const io = require('socket.io')(httpsServer, { cors: corsParams })
+const io = require('socket.io')(httpsServer, { path: "/mediasoup/socket.io/", cors: corsParams })
 
 if (process.env.WEB_UI !== undefined) {
-  app.use(express.static(path.join(__dirname, '..', 'public')))
+  //app.use(express.static(path.join(__dirname, '..', 'public')))
+  app.use("/mediasoup/", express.static(path.join(__dirname, '..', 'public')))
 }
 
 httpsServer.listen(config.listenPort, () => {
