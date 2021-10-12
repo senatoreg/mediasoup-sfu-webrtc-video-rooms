@@ -1,5 +1,8 @@
 const os = require('os')
+const dns = require('dns')
 const ifaces = os.networkInterfaces()
+
+let myName = 'seminar.academia.sorint.it'
 
 const getLocalIp = () => {
   let localIp = '127.0.0.1'
@@ -28,7 +31,7 @@ module.exports = {
     numWorkers: Object.keys(os.cpus()).length,
     worker: {
       rtcMinPort: 10000,
-      rtcMaxPort: 10100,
+      rtcMaxPort: 15000,
       logLevel: 'warn',
       logTags: [
         'info',
@@ -68,7 +71,7 @@ module.exports = {
       listenIps: [
         {
           ip: '0.0.0.0',
-          announcedIp: getLocalIp() // replace by public IP address
+          //announcedIp: getRemoteIp() // replace by public IP address
         }
       ],
       maxIncomingBitrate: 1500000,
@@ -76,3 +79,13 @@ module.exports = {
     }
   }
 }
+
+dns.resolve4(myName, (err, addresses) => {
+  if (err) throw err;
+
+  console.log(`addresses: ${JSON.stringify(addresses)}`);
+
+  if (addresses.length > 0) {
+    module.exports.mediasoup.webRtcTransport.listenIps[0].announcedIp = addresses[0]
+  }
+});
