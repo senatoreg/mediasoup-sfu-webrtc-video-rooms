@@ -18,12 +18,12 @@ WORKDIR /app
 COPY --from=builder /app/node_modules node_modules
 COPY package-lock.json .
 COPY package.json .
-COPY src src
+COPY src/Room.js src/Peer.js src/app.js src
 COPY ssl ssl
 COPY public public
 
 EXPOSE 3016
-EXPOSE 10000-10100
+EXPOSE 10000-15000
 
 #RUN npm i -g nodemon
 

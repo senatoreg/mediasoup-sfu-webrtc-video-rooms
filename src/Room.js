@@ -1,4 +1,4 @@
-const config = require('./config')
+const config = require('./conf/config')
 module.exports = class Room {
   constructor(room_id, worker, io) {
     this.id = room_id
